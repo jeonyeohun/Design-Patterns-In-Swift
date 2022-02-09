@@ -134,3 +134,91 @@ factory.makePhone(type: .galaxy).ring()
 factory.makePhone(type: .iPhone).ring()
 
 ```
+
+```swift
+import Foundation
+
+protocol Sandwich: CustomStringConvertible {
+    func cost () -> Int
+}
+
+protocol Decorating: Sandwich {
+    var sandwich: Sandwich { get set }
+}
+
+class OriginalSandwich: Sandwich {
+    var description: String {
+        return "OriginalSandwich"
+    }
+    
+    func cost() -> Int {
+        return 3000
+    }
+}
+
+class VeganSandwich: Sandwich {
+    var description: String {
+        return "VeganSandwich"
+    }
+    
+    func cost() -> Int {
+        return 2500
+    }
+}
+
+
+class Avocado: Decorating {
+    var sandwich: Sandwich
+    var description: String {
+        return self.sandwich.description + " + Avocado"
+    }
+    
+    init(sandwich: Sandwich) {
+        self.sandwich = sandwich
+    }
+    
+    func cost() -> Int {
+        return self.sandwich.cost() + 1000
+    }
+}
+
+class MeatBall: Decorating {
+    var sandwich: Sandwich
+    var description: String {
+        return self.sandwich.description + " + MeatBall"
+    }
+    
+    init(sandwich: Sandwich) {
+        self.sandwich = sandwich
+    }
+    
+    func cost() -> Int {
+        return self.sandwich.cost() + 1500
+    }
+}
+
+class Tomato: Decorating {
+    var sandwich: Sandwich
+    var description: String {
+        return self.sandwich.description + " + Tomato"
+    }
+    
+    init(sandwich: Sandwich) {
+        self.sandwich = sandwich
+    }
+    
+    func cost() -> Int {
+        return self.sandwich.cost() + 500
+    }
+}
+
+let avocadoMeatBallSandwich = MeatBall(sandwich: Avocado(sandwich: OriginalSandwich()))
+
+print(avocadoMeatBallSandwich.cost())
+print(avocadoMeatBallSandwich)
+
+let tomatoAdded = Tomato(sandwich: avocadoMeatBallSandwich)
+print(tomatoAdded.cost())
+print(tomatoAdded)
+
+```
