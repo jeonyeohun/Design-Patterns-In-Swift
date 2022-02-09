@@ -8,12 +8,13 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 |:-:|:-:|:-:|
 |추상 팩토리(Abstract Factory)|어댑터(Adapter)|책임 연쇄(Chain of Responsibility)|
 |빌더(Builder)|브릿지(Bridge)|커맨드(Command)|
-|[팩토리 메서드(Factory Methods)](https://github.com/jeonyeohun/Design-Patterns-In-Swift/edit/main/README.md#-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4-factory-method-pattern)|컴포지트(Composite)|인터프리터(Interpreter)|
+|[팩토리 메서드(Factory Methods)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4-factory-method-pattern)|컴포지트(Composite)|인터프리터(Interpreter)|
 |프로토타입(Prototype)|퍼사드(Facade)|미디에이터(Mediator)|
 |싱글톤(Singleton)|플라이웨이트(Flyweight)|메멘토(Memento)|
 ||프록시(Proxy)|옵저버(Observer)|
-||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift/edit/main/README.md#-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4-factory-method-pattern)|스테이트(State)|
-|||[전략(Strategy)](https://github.com/jeonyeohun/Design-Patterns-In-Swift/edit/main/README.md#%EF%B8%8F-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4-strategy-pattern)|
+||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%8C%A8%ED%84%B4-decorator-pattern)|스테이트(State)|
+|||[전략(Strategy)](||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%8C%A8%ED%84%B4-decorator-pattern)|스테이트(State)|
+)|
 |||템플릿 메서드(Template Method)|
 |||방문(Visitor)|
 
