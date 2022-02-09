@@ -13,8 +13,7 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 |싱글톤(Singleton)|플라이웨이트(Flyweight)|메멘토(Memento)|
 ||프록시(Proxy)|옵저버(Observer)|
 ||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%8C%A8%ED%84%B4-decorator-pattern)|스테이트(State)|
-|||[전략(Strategy)](||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%8C%A8%ED%84%B4-decorator-pattern)|스테이트(State)|
-)|
+|||[전략(Strategy)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4-strategy-pattern)|스테이트(State)||
 |||템플릿 메서드(Template Method)|
 |||방문(Visitor)|
 
