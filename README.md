@@ -6,7 +6,7 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 
 |생성 패턴|구조 패턴|행위 패턴|
 |:-:|:-:|:-:|
-|추상 팩토리(Abstract Factory)|어댑터(Adapter)|책임 연쇄(Chain of Responsibility)|
+|[추상 팩토리(Abstract Factory)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EC%B6%94%EC%83%81-%ED%8C%A9%ED%86%A0%EB%A6%AC-%ED%8C%A8%ED%84%B4-abstract-factory-pattern)|어댑터(Adapter)|책임 연쇄(Chain of Responsibility)|
 |빌더(Builder)|브릿지(Bridge)|커맨드(Command)|
 |[팩토리 메서드(Factory Methods)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4-factory-method-pattern)|컴포지트(Composite)|인터프리터(Interpreter)|
 |프로토타입(Prototype)|퍼사드(Facade)|미디에이터(Mediator)|
@@ -20,6 +20,148 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 <br/>
 
 ## 생성 패턴(Creational Pattern)
+
+### 📦 추상 팩토리 패턴 (Abstract Factory Pattern)
+
+추상 팩토리 패턴은 한 팩토리에 여러 연관된 객체를 생성하는 팩토리 메서드를 정의하는 방법입니다. [더 자세히 알아보기](https://jeonyeohun.tistory.com/386)
+
+```swift
+import Foundation
+
+protocol View: CustomStringConvertible {
+    var id: String { get set }
+    var color: String { get set }
+}
+
+extension View {
+    var description: String {
+        return "type: view id: \(id) color \(color)"
+    }
+}
+
+protocol Button: CustomStringConvertible {
+    var id: String { get set }
+    var color: String { get set }
+}
+
+extension Button {
+    var description: String {
+        return "type: button id: \(id) color \(color)"
+    }
+}
+
+class YellowView: View {
+    var id: String
+    var color: String = "Yellow"
+    
+    init(id: String) {
+        self.id = id
+    }
+}
+
+class BlackView: View {
+    var id: String
+    var color: String = "Black"
+    
+    init(id: String) {
+        self.id = id
+    }
+}
+
+class YellowButton: Button {
+    var id: String
+    var color: String = "Yellow"
+    
+    init(id: String) {
+        self.id = id
+    }
+}
+
+class BlackButton: Button {
+    var id: String
+    var color: String = "Black"
+    
+    init(id: String) {
+        self.id = id
+    }
+}
+
+protocol ButtonBoxFactory {
+    func createView() -> View
+    func createButton() -> Button
+}
+
+class DarkButtonBoxFactory: ButtonBoxFactory {
+    func createView() -> View {
+        return BlackView(id: "bv")
+    }
+    
+    func createButton() -> Button {
+        return YellowButton(id: "yb")
+    }
+}
+
+class LightButtonBoxFactory: ButtonBoxFactory {
+    func createView() -> View {
+        return YellowView(id: "yv")
+    }
+    
+    func createButton() -> Button {
+        return BlackButton(id: "bb")
+    }
+}
+
+class ButtonBox {
+    enum ColorTheme {
+        case dark, light
+    }
+    
+    private var colorTheme: ColorTheme
+    private var buttonBoxFacotry: ButtonBoxFactory
+    private var button: Button?
+    private var view: View?
+    
+    init(colorTheme: ColorTheme) {
+        self.colorTheme = colorTheme
+        self.buttonBoxFacotry = colorTheme == .dark ? DarkButtonBoxFactory() : LightButtonBoxFactory()
+        self.createButtonBox()
+    }
+    
+    private func createButtonBox() {
+        self.button = buttonBoxFacotry.createButton()
+        self.view = buttonBoxFacotry.createView()
+    }
+    
+    func change(colorTheme: ColorTheme) {
+        self.colorTheme = colorTheme
+        self.buttonBoxFacotry = colorTheme == .dark ? DarkButtonBoxFactory() : LightButtonBoxFactory()
+        self.createButtonBox()
+    }
+    
+    func printComponents() {
+        print(self.view!)
+        print(self.button!)
+    }
+}
+
+var buttonBox = ButtonBox(colorTheme: .dark)
+buttonBox.printComponents()
+
+print("\n## Change Factory ##\n")
+
+buttonBox.change(colorTheme: .light)
+buttonBox.printComponents()
+
+// type: view id: bv color Black
+// type: button id: yb color Yellow
+//
+// ## Change Factory ##
+//
+// type: view id: yv color Yellow
+// type: button id: bb color Black
+// Program ended with exit code: 0
+
+```
 
 ### 🏭 팩토리 메서드 패턴 (Factory Method Pattern)
 
