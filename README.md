@@ -296,7 +296,7 @@ animalCafe.printAnimals()
 
 ```swift
 class Singleton {
-    static var shared = Singleton()
+    static let shared = Singleton()
     var state = true
     
     private init() {}
