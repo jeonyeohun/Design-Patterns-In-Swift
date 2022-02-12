@@ -10,7 +10,7 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 |빌더(Builder)|브릿지(Bridge)|커맨드(Command)|
 |[팩토리 메서드(Factory Methods)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4-factory-method-pattern)|컴포지트(Composite)|인터프리터(Interpreter)|
 |프로토타입(Prototype)|퍼사드(Facade)|미디에이터(Mediator)|
-|싱글톤(Singleton)|플라이웨이트(Flyweight)|메멘토(Memento)|
+|[싱글톤(Singleton)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%8B%B1%EA%B8%80%ED%86%A4-%ED%8C%A8%ED%84%B4-singleton-pattern)|플라이웨이트(Flyweight)|메멘토(Memento)|
 ||프록시(Proxy)|옵저버(Observer)|
 ||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%8C%A8%ED%84%B4-decorator-pattern)|스테이트(State)|
 |||[전략(Strategy)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4-strategy-pattern)|스테이트(State)||
@@ -163,6 +163,8 @@ buttonBox.printComponents()
 
 ```
 
+</br>
+
 ### 🏭 팩토리 메서드 패턴 (Factory Method Pattern)
 
 팩토리 메서드 패턴은 객체의 인스턴스를 생성하는 인터페이스를 제공하고, 인스턴스의 생성은 서브클래스에서 정의하도록 하는 방법입니다. 따라서 인스턴스가 생성될 때는 입력에 따른 적절한 팩토리 객체를 선택해 해당 객체를 통해 인스턴스를 생성하게 됩니다. [더 자세히 알아보기](https://jeonyeohun.tistory.com/385)
@@ -285,6 +287,53 @@ animalCafe.printAnimals()
 //E Meow! 😸
 //F Meow! 😸
 
+```
+</br>
+
+### ☝️ 싱글톤 패턴 (Singleton Pattern)
+
+싱글톤 패턴은 단 하나의 인스턴스만을 생성하고 추가적인 인스턴스를 생성하지 못하도록하며 코드 전역에서 인스턴스를 공유할 수 있도록 하는 디자인 패턴입니다.
+
+```swift
+class Singleton {
+    static var shared = Singleton()
+    var state = true
+    
+    private init() {}
+}
+
+class A {
+    let singleton = Singleton.shared
+    
+    func printState() {
+        print(singleton.state)
+    }
+    
+    func updateState() {
+        singleton.state.toggle()
+    }
+}
+
+class B {
+    let singleton = Singleton.shared
+    
+    func printState() {
+        print(singleton.state)
+    }
+    
+    func updateState() {
+        singleton.state.toggle()
+    }
+}
+
+let a = A()
+let b = B()
+
+a.printState() // true
+b.printState() // true
+a.updateState()
+a.printState() // false
+b.printState() // false
 ```
 
 <br/>
