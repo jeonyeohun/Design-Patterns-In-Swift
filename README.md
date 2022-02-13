@@ -11,7 +11,7 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 |[팩토리 메서드(Factory Methods)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4-factory-method-pattern)|컴포지트(Composite)|인터프리터(Interpreter)|
 |프로토타입(Prototype)|퍼사드(Facade)|미디에이터(Mediator)|
 |[싱글톤(Singleton)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%8B%B1%EA%B8%80%ED%86%A4-%ED%8C%A8%ED%84%B4-singleton-pattern)|플라이웨이트(Flyweight)|메멘토(Memento)|
-||프록시(Proxy)|옵저버(Observer)|
+||프록시(Proxy)|[옵저버(Observer)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EC%98%B5%EC%A0%80%EB%B2%84-%ED%8C%A8%ED%84%B4-observer-pattern)|
 ||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%8C%A8%ED%84%B4-decorator-pattern)|스테이트(State)|
 |||[전략(Strategy)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4-strategy-pattern)|스테이트(State)||
 |||템플릿 메서드(Template Method)|
@@ -292,7 +292,7 @@ animalCafe.printAnimals()
 
 ### ☝️ 싱글톤 패턴 (Singleton Pattern)
 
-싱글톤 패턴은 단 하나의 인스턴스만을 생성하고 추가적인 인스턴스를 생성하지 못하도록하며 코드 전역에서 인스턴스를 공유할 수 있도록 하는 디자인 패턴입니다.
+싱글톤 패턴은 단 하나의 인스턴스만을 생성하고 추가적인 인스턴스를 생성하지 못하도록하며 코드 전역에서 인스턴스를 공유할 수 있도록 하는 디자인 패턴입니다. [더 자세히 알아보기](https://jeonyeohun.tistory.com/388)
 
 ```swift
 class Singleton {
@@ -503,6 +503,69 @@ print(validateAll(text: "12345678910")) // false
 
 ```
 
+</br>
 
+### 👀 옵저버 패턴 (Observer Pattern)
+
+옵저버 패턴은 어떤 객체에서 발생하는 이벤트를 해당 객체를 관찰하고 있는 객체에게 알리는 방식으로 메서드를 호출하는 패턴입니다 [더 자세히 알아보기](https://jeonyeohun.tistory.com/215)
+
+```swift
+protocol Observable {
+    func notify (post: String)
+    func add(follower: Follower)
+    func remove(follower: Follower)
+}
+ 
+class Celebrity: Observable {
+    let name: String
+    var followers: [Follower] = []
+    
+    init(name: String) {
+        self.name = name
+    }
+    
+    func notify(post: String) {
+        for follower in followers {
+            follower.update(post: post)
+        }
+    }
+    
+    func add(follower: Follower) {
+        self.followers.append(follower)
+    }
+    
+    func remove(follower: Follower) {
+        guard let removeIndex = followers.firstIndex(where: { $0 === follower }) else { return }
+        self.followers.remove(at: removeIndex)
+    }
+}
+
+protocol Followable {
+    func update (post: String)
+}
+ 
+class Follower: Followable {
+    let name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+    
+    func update(post: String) {
+        print("\(name)입니다! -> \(post)")
+    }
+}
+
+let han = Celebrity(name: "한호열")
+han.add(follower: Follower(name: "안준호"))
+han.add(follower: Follower(name: "황장수"))
+han.add(follower: Follower(name: "조석봉"))
+
+han.notify(post: "호랑이 열정, 호열이에요~")
+ 
+// 안준호입니다! -> 호랑이 열정, 호열이에요~
+// 황장수입니다! -> 호랑이 열정, 호열이에요~
+// 조석봉입니다! -> 호랑이 열정, 호열이에요~
+```
 
 
