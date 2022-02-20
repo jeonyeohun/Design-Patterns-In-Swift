@@ -7,7 +7,7 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 |생성 패턴|구조 패턴|행위 패턴|
 |:-:|:-:|:-:|
 |[추상 팩토리(Abstract Factory)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EC%B6%94%EC%83%81-%ED%8C%A9%ED%86%A0%EB%A6%AC-%ED%8C%A8%ED%84%B4-abstract-factory-pattern)|어댑터(Adapter)|책임 연쇄(Chain of Responsibility)|
-|빌더(Builder)|브릿지(Bridge)|커맨드(Command)|
+|빌더(Builder)|브릿지(Bridge)|[커맨드(Command)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EC%BB%A4%EB%A7%A8%EB%93%9C-%ED%8C%A8%ED%84%B4)|
 |[팩토리 메서드(Factory Methods)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%ED%8C%A9%ED%86%A0%EB%A6%AC-%EB%A9%94%EC%84%9C%EB%93%9C-%ED%8C%A8%ED%84%B4-factory-method-pattern)|컴포지트(Composite)|인터프리터(Interpreter)|
 |프로토타입(Prototype)|퍼사드(Facade)|미디에이터(Mediator)|
 |[싱글톤(Singleton)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%8B%B1%EA%B8%80%ED%86%A4-%ED%8C%A8%ED%84%B4-singleton-pattern)|플라이웨이트(Flyweight)|메멘토(Memento)|
@@ -432,6 +432,183 @@ print(tomatoAdded) // OriginalSandwich + Avocado + MeatBall + Tomato
 <br/>
 
 ## 행위 패턴(Behavioral Pattern)
+
+### 👇 커맨드 패턴
+
+커맨드 패턴은 객체로 보내는 요청를 캡슐화하여 요청들을 파라미터화 하고 역으로 동작을 수행할 수 있도록 하는 디자인 패턴입니다. [더 자세히 알아보기](https://jeonyeohun.tistory.com/389)
+
+```swift
+//
+//  main.swift
+//  example
+//
+//  Created by USER on 2022/02/20.
+//
+
+import Foundation
+
+final class TVRemoteControl {
+    private let onCommand: Commanding
+    private let offCommand: Commanding
+    private let upCommand: Commanding
+    private let downCommand: Commanding
+    private var commandHistory: [Commanding] = []
+    
+    init(
+        on: Commanding,
+        off: Commanding,
+        up: Commanding,
+        down: Commanding
+    ) {
+        self.onCommand = on
+        self.offCommand = off
+        self.upCommand = up
+        self.downCommand = down
+    }
+    
+    func on() {
+        self.onCommand.execute()
+        self.commandHistory.append(self.onCommand)
+    }
+    
+    func off() {
+        self.offCommand.execute()
+        self.commandHistory.append(self.offCommand)
+    }
+    
+    func up() {
+        self.upCommand.execute()
+        self.commandHistory.append(self.upCommand)
+    }
+    
+    func down() {
+        self.downCommand.execute()
+        self.commandHistory.append(self.downCommand)
+    }
+    
+    func reverseAll() {
+        while self.commandHistory.isEmpty == false {
+            let command = self.commandHistory.removeLast()
+            command.unexecute()
+        }
+    }
+}
+
+final class TV {
+    func on() {
+        print("on")
+    }
+    
+    func off() {
+        print("off")
+    }
+    
+    func up() {
+        print("up")
+    }
+    
+    func down() {
+        print("down")
+    }
+}
+
+protocol Commanding {
+    func execute()
+    func unexecute()
+}
+
+final class OnCommand: Commanding {
+    let tv: TV
+    
+    init(tv: TV) {
+        self.tv = tv
+    }
+    
+    func execute() {
+        tv.on()
+    }
+    
+    func unexecute() {
+        tv.off()
+    }
+}
+
+final class OffCommand: Commanding {
+    let tv: TV
+    
+    init(tv: TV) {
+        self.tv = tv
+    }
+    
+    func execute() {
+        tv.off()
+    }
+    
+    func unexecute() {
+        tv.on()
+    }
+}
+
+final class UpCommand: Commanding {
+    let tv: TV
+    
+    init(tv: TV) {
+        self.tv = tv
+    }
+    
+    func execute() {
+        tv.up()
+    }
+    
+    func unexecute() {
+        tv.down()
+    }
+}
+
+
+final class DownCommand: Commanding {
+    let tv: TV
+    
+    init(tv: TV) {
+        self.tv = tv
+    }
+    
+    func execute() {
+        tv.down()
+    }
+    
+    func unexecute() {
+        tv.up()
+    }
+}
+
+let appleTV = TV()
+let appleRemoteControl = TVRemoteControl(
+    on: OnCommand(tv: appleTV),
+    off: OffCommand(tv: appleTV),
+    up: UpCommand(tv: appleTV),
+    down: DownCommand(tv: appleTV)
+)
+
+appleRemoteControl.on()
+appleRemoteControl.off()
+appleRemoteControl.down()
+appleRemoteControl.up()
+appleRemoteControl.reverseAll()
+
+//on
+//off
+//down
+//up
+//down
+//up
+//on
+//off
+//Program ended with exit code: 0
+
+```
+
+</br>
 
 ### ⚡️ 전략 패턴 (Strategy Pattern)
 
