@@ -14,7 +14,8 @@ GoF 디자인 패턴을 스위프트로 구현해가며 정리하는 저장소�
 ||프록시(Proxy)|[옵저버(Observer)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EC%98%B5%EC%A0%80%EB%B2%84-%ED%8C%A8%ED%84%B4-observer-pattern)|
 ||[데코레이터(Decorator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0-%ED%8C%A8%ED%84%B4-decorator-pattern)|스테이트(State)|
 |||[전략(Strategy)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4-strategy-pattern)|스테이트(State)||
-|||[템플릿 메서드(Template Method)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-%EC%A0%84%EB%9E%B5-%ED%8C%A8%ED%84%B4-strategy-pattern)|
+|||[템플릿 메서드(Template Method)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#-템플릿-메소드-패턴-template-method-pattern)|
+|||[반복자(Iterator)](https://github.com/jeonyeohun/Design-Patterns-In-Swift#%EF%B8%8F-반복자-패턴-iterator-pattern)|
 |||방문(Visitor)|
 
 <br/>
@@ -747,7 +748,7 @@ han.notify(post: "호랑이 열정, 호열이에요~")
 
 </br>
 
-###  템플릿 메소드 패턴 (Template Method Pattern)
+### 📄 템플릿 메소드 패턴 (Template Method Pattern)
 
 템플릿 메소드 패턴은 알고리즘의 골격을 정의합니다. 템플릿 메소드를 사용하면 알고리즘의 일부 단계를 서브클래스에서 구현해 알고리즘의 단계는 그대로 유지하면서 일부 단계의 내용만 재정의 할 수 있도록 합니다. [더 자세히 알아보기](https://jeonyeohun.tistory.com/391)
 
@@ -841,6 +842,90 @@ strongReg.register()
 // reinput password
 // password and repassword should be identical
 // Success!
+
+```
+
+</br>
+
+### ♻️ 반복자 패턴 (Iterator Pattern)
+
+반복자 패턴은 컬렉션의 내부 구현을 노출하지 않으면서 컬렉션의 모든 요소에 접근할 수 있는 방법을 제공합니다. [더 자세히 알아보기](https://jeonyeohun.tistory.com/390)
+
+```swift
+protocol Iterable {
+    associatedtype Iterator
+    func makeIterator() -> Iterator
+}
+
+protocol Iterator {
+    associatedtype Element
+    func hasNext() -> Bool
+    func next() -> Element?
+}
+
+final class defaultIterator<T>: Iterator {
+    typealias Element = T
+    private var items: [Element] = []
+    private var current = 0
+
+    init(items: [Element]) {
+        self.items = items
+    }
+
+    func next() -> Element? {
+        guard hasNext() else { return nil }
+        defer { self.current += 1 }
+
+        return items[current]
+    }
+
+    func hasNext() -> Bool {
+        current < items.count
+    }
+}
+
+final class MapCollection: Iterable {
+    private var map: [String: String] = [:]
+
+    func add(element: String, for key: String) {
+        map.updateValue(element, forKey: key)
+    }
+
+    func makeIterator() -> defaultIterator<String> {
+        return defaultIterator<String>(items: self.map.values.map({ $0 }))
+    }
+}
+
+final class ListCollection: Iterable {
+    private var list: [String] = []
+
+    func add(element: String) {
+        list.append(element)
+    }
+
+    func makeIterator() -> defaultIterator<String> {
+        return defaultIterator<String>(items: self.list)
+    }
+}
+
+let map = MapCollection()
+let list = ListCollection()
+
+map.add(element: "1", for: "1")
+map.add(element: "2", for: "2")
+map.add(element: "3", for: "3")
+
+list.add(element: "11")
+list.add(element: "22")
+list.add(element: "33")
+
+let iterators = [map.makeIterator(), list.makeIterator()]
+
+for iterator in iterators {
+    while iterator.hasNext() {
+        print(iterator.next() ?? "0")
+    }
+}
 
 ```
 
